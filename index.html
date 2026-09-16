@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -111,16 +112,13 @@ body {
 
     width: min(86vw, 540px);
 
-    /*
-       Vertical physical card:
-       54mm × 86mm
-    */
-
     aspect-ratio: 54 / 86;
 
     perspective: 1600px;
 
     cursor: pointer;
+
+    -webkit-perspective: 1600px;
 }
 
 
@@ -132,16 +130,20 @@ body {
     position: relative;
 
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
 
     transition:
         transform 1.1s
         cubic-bezier(.4,.2,.2,1);
+
+    will-change: transform;
 }
 
 
 .card.flipped {
 
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
 }
 
 
@@ -163,8 +165,10 @@ body {
     border-radius: 22px;
 
     backface-visibility: hidden;
-
     -webkit-backface-visibility: hidden;
+
+    transform-style: flat;
+    -webkit-transform-style: flat;
 
     box-shadow:
         0 30px 60px rgba(120,0,70,.25),
@@ -195,6 +199,9 @@ body {
 
     border: 2px solid
         rgba(255,190,225,.55);
+
+    transform: rotateY(0deg);
+    -webkit-transform: rotateY(0deg);
 }
 
 
@@ -327,6 +334,14 @@ body {
         rgba(255,50,160,.7);
 
     z-index: 8;
+
+    transform: translateZ(1px);
+    -webkit-transform: translateZ(1px);
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    isolation: isolate;
 }
 
 
@@ -343,6 +358,12 @@ body {
     border-radius: 13px;
 
     background: #430126;
+
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 
@@ -371,6 +392,8 @@ body {
     font-size: clamp(9px, 3vw, 15px);
 
     z-index: 15;
+
+    pointer-events: none;
 }
 
 
@@ -405,7 +428,10 @@ body {
     font-size: clamp(30px, 9vw, 55px);
 
     z-index: 20;
+
+    pointer-events: none;
 }
+
 
 .heart1 {
 
@@ -415,6 +441,7 @@ body {
 
     transform: rotate(-15deg);
 }
+
 
 .heart2 {
 
@@ -438,7 +465,10 @@ body {
 
     text-shadow:
         0 0 15px #ff3fa5;
+
+    pointer-events: none;
 }
+
 
 .flower1 {
 
@@ -446,6 +476,7 @@ body {
 
     left: 4%;
 }
+
 
 .flower2 {
 
@@ -462,6 +493,7 @@ body {
 .back {
 
     transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
 
     background:
 
@@ -579,7 +611,10 @@ body {
     text-shadow:
         0 0 20px
         rgba(255,54,163,.8);
+
+    pointer-events: none;
 }
+
 
 .back-flower-left {
 
@@ -589,6 +624,7 @@ body {
 
     transform: rotate(-15deg);
 }
+
 
 .back-flower-right {
 
@@ -658,25 +694,39 @@ body {
 
 
 .s1 {
+
     top: 10%;
+
     left: 7%;
 }
 
+
 .s2 {
+
     top: 25%;
+
     right: 7%;
+
     animation-delay: 1s;
 }
 
+
 .s3 {
+
     bottom: 15%;
+
     left: 8%;
+
     animation-delay: 2s;
 }
 
+
 .s4 {
+
     bottom: 25%;
+
     right: 8%;
+
     animation-delay: 3s;
 }
 
@@ -718,6 +768,53 @@ body {
         transform:
             translateY(-15px)
             rotate(15deg);
+    }
+}
+
+
+/* =========================
+   MOBILE VIDEO FIX
+========================= */
+
+@media (max-width: 600px) {
+
+    .card-wrapper {
+
+        -webkit-perspective: 1600px;
+        perspective: 1600px;
+    }
+
+    .card {
+
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+    }
+
+    .card-side {
+
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+
+        -webkit-transform-style: flat;
+        transform-style: flat;
+    }
+
+    .video-container {
+
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+
+        -webkit-transform: translateZ(1px);
+        transform: translateZ(1px);
+    }
+
+    .video-container video {
+
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
     }
 }
 
@@ -831,13 +928,13 @@ body {
 <!-- CARD -->
 
 <div
-class="card-wrapper"
-onclick="flipCard()"
+    class="card-wrapper"
+    onclick="flipCard()"
 >
 
 <div
-class="card"
-id="card"
+    class="card"
+    id="card"
 >
 
 
@@ -871,21 +968,22 @@ id="card"
 <!-- VIDEO -->
 
 <div
-class="video-container"
-onclick="event.stopPropagation()"
+    class="video-container"
+    onclick="event.stopPropagation()"
 >
 
 <video
-id="birthdayVideo"
-controls
-playsinline
-preload="metadata"
-poster="samantha.jpg"
+    id="birthdayVideo"
+    controls
+    playsinline
+    webkit-playsinline
+    preload="metadata"
+    poster="samantha.jpg"
 >
 
 <source
-src="birthday-video.mp4"
-type="video/mp4"
+    src="birthday-video.mp4"
+    type="video/mp4"
 >
 
 Your browser does not support video.
@@ -1025,3 +1123,18 @@ function flipCard() {
 </body>
 
 </html>
+```
+
+**Important:** keep these files in the same folder:
+
+```text
+your-folder/
+│
+├── index.html
+├── birthday-video.mp4
+└── samantha.jpg
+```
+
+The important mobile additions are `transform-style: flat`, `backface-visibility: hidden`, `translateZ()`, and `webkit-playsinline`.
+
+This should prevent the video from visually breaking the flip on mobile while keeping the desktop animation intact.
